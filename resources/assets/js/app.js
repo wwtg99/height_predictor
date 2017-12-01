@@ -6,8 +6,13 @@
  */
 
 require('./bootstrap');
+import iView from 'iview';
+import 'iview/dist/styles/iview.css';
+import ICountUp from 'vue-countup-v2';
 
 window.Vue = require('vue');
+
+Vue.use(iView);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,7 +20,11 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('i-count-up', ICountUp);
+// Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('predictor-home', require('./components/PredictorHome.vue'));
+Vue.component('genotype-predictor', require('./components/GenotypePredictor.vue'));
+Vue.component('parent-predictor', require('./components/ParentPredictor.vue'));
 
 const app = new Vue({
     el: '#app'

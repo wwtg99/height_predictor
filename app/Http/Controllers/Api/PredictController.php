@@ -12,7 +12,7 @@ class PredictController extends Controller
     public function predict(Request $request)
     {
         $genotype = $request->file('genotype');
-        if (!$genotype->isValid()) {
+        if (!$genotype || !$genotype->isValid()) {
             return response()->json(['error'=>'invalid file']);
         }
         $gender = $request->input('gender');
