@@ -59,6 +59,16 @@ class Predictor
     protected $snpType;
 
     /**
+     * @var string
+     */
+    protected $error = '';
+
+    /**
+     * @var int
+     */
+    protected $minSnp = 40;
+
+    /**
      * Predictor constructor.
      *
      * @param array|string $models
@@ -102,6 +112,9 @@ class Predictor
         if (!$f) {
             return $f;
         }
+        if ($this->error) {
+            return false;
+        }
         return $this->predict($f);
     }
 
@@ -114,10 +127,11 @@ class Predictor
     public function parseInputs($genotypeFile, $gender, $source = null)
     {
         if (!file_exists($genotypeFile)) {
+            $this->error = 'genotype file not exists';
             return false;
         }
         $output = $this->getPreprocessedGenotypePath();
-        $cmd = [$this->parseInputScript, '--genotype', $genotypeFile, '--output', $output, '--gender', $gender];
+        $cmd = [$this->parseInputScript, '--genotype', $genotypeFile, '--output', $output, '--gender', $gender, '--min-snp', $this->minSnp];
         if ($this->snpType) {
             $cmd[] = "--snp-list=$this->snpType";
         }
@@ -125,6 +139,10 @@ class Predictor
             $cmd[] = "--source=$source";
         }
         $re = $this->runScript($cmd);
+        if (starts_with($re, 'Exception')) {
+            $this->error = $re;
+            logger()->error($this->error);
+        }
         return $output;
     }
 
@@ -135,6 +153,7 @@ class Predictor
     public function predict($processedFile)
     {
         if (!file_exists($processedFile)) {
+            $this->error = 'preprocess file not exists';
             return false;
         }
         $cmd = [$this->predictScript, $processedFile, '--model-dir', $this->modelDir, '--quiet'];
@@ -142,7 +161,19 @@ class Predictor
             $cmd[] = '--model ' . implode(',', $this->models);
         }
         $re = $this->runScript($cmd);
+        if (starts_with($re, 'Exception')) {
+            $this->error = $re;
+            logger()->error($this->error);
+        }
         return $re;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->error;
     }
 
     /**
@@ -163,7 +194,7 @@ class Predictor
     {
         $output = [];
         $cmd = array_prepend($cmd, $this->python);
-        $c = implode(' ', $cmd);
+        $c = implode(' ', $cmd) . " 2>&1";
         logger()->debug("Run script: $c");
         return exec($c, $output);
     }

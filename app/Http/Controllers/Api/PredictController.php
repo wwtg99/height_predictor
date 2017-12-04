@@ -23,7 +23,7 @@ class PredictController extends Controller
         $predictor = new Predictor();
         $pre = $predictor->predictHeight($genotype->getRealPath(), $gender, $source);
         if (!$pre) {
-            return response()->json(['error'=>'predict failed']);
+            return response()->json(['error'=>$predictor->getError()]);
         }
         return response()->json(['height'=>$pre]);
     }
