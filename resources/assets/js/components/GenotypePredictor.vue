@@ -1,32 +1,37 @@
 <template>
     <div class="container">
         <Row>
-            <i-col span="24">
-                <i-form :model="formItem" :label-width="80" id="gt_form">
-                    <Form-item label="文件类型">
-                        <i-select :model.sync="formItem.source" placeholder="请选择类型" v-if="sources" name="source">
-                            <i-option v-for="(s, index) in sources" :value="index" :key="index">{{ s }}</i-option>
-                        </i-select>
+            <Col span="24">
+                <Form ref="iform" :model="formItem" :label-width="80" :rules="rules">
+                    <Form-item label="文件类型" prop="source">
+                        <Select :model.sync="formItem.source" placeholder="请选择类型" v-if="sources" name="source">
+                            <Option v-for="(s, index) in sources" :value="index" :key="index">{{ s }}</Option>
+                        </Select>
                     </Form-item>
-                    <Form-item label="基因文件">
+                    <Form-item label="基因文件" prop="genotype">
                         <input type="file" :model="formItem.genotype" name="genotype">
                     </Form-item>
-                    <Form-item label="性别">
-                        <i-select :model.sync="formItem.gender" placeholder="请选择性别" name="gender">
-                            <i-option value="male">男</i-option>
-                            <i-option value="female">女</i-option>
-                        </i-select>
+                    <Form-item label="性别" prop="gender">
+                        <RadioGroup v-model="formItem.gender">
+                            <Radio label="male">男</Radio>
+                            <Radio label="female">女</Radio>
+                        </RadioGroup>
                     </Form-item>
                     <Form-item>
-                        <i-button type="primary" :loading="loading" @click="submit">提交</i-button>
+                        <Button type="primary" :loading="loading" @click="submit">提交</Button>
                     </Form-item>
-                </i-form>
-            </i-col>
+                </Form>
+            </Col>
         </Row>
         <Row v-if="height" class="predict_height">
-            <i-col span="24">
-                预测您的基因身高: <i-count-up :start="0" :end="height" :decimals="2" :duration="2.5" class="countup"></i-count-up> cm
-            </i-col>
+            <Col span="24">
+                预测您的基因身高: <CountUp :start="0" :end="height" :decimals="2" :duration="2.5" class="countup"></CountUp> cm
+            </Col>
+        </Row>
+        <Row v-if="height" class="tips">
+            <Col span="20" offset="2">
+                <p></p>
+            </Col>
         </Row>
     </div>
 </template>
@@ -37,9 +42,13 @@
         data() {
             return {
                 formItem: {
-                    genotype: undefined,
-                    gender: undefined,
-                    source: undefined
+                    genotype: null,
+                    gender: null,
+                    source: null
+                },
+                rules: {
+                    genotype: {required: true, message: '请上传基因型文件', trigger: 'blur'},
+                    gender: {required: true, message: '请输入孩子的性别', trigger: 'change'}
                 },
                 sources: {},
                 height: null,
@@ -59,26 +68,32 @@
                 }.bind(this));
             },
             submit() {
-                this.loading = true;
-                let fd = new FormData(document.getElementById('gt_form'));
-                axios.post('/api/predict', fd).then(function(res) {
-                    if ('data' in res) {
-                        if ('height' in res.data) {
-                            this.height = Number(res.data.height);
-                        } else if ('error' in res.data) {
-                            this.$Message.error(res.data.error);
+                this.$refs['iform'].validate((valid) => {
+                    if (!valid) {
+                        this.$Message.error('信息输入有误！');
+                        return;
+                    }
+                    this.loading = true;
+                    let fd = new FormData(document.getElementById('gt_form'));
+                    axios.post('/api/predict', fd).then(function (res) {
+                        if ('data' in res) {
+                            if ('height' in res.data) {
+                                this.height = Number(res.data.height);
+                            } else if ('error' in res.data) {
+                                this.$Message.error(res.data.error);
+                            } else {
+                                this.$Message.error('无法预测，文件格式不对或无法识别！');
+                            }
                         } else {
                             this.$Message.error('无法预测，文件格式不对或无法识别！');
                         }
-                    } else {
+                        this.loading = false;
+                    }.bind(this)).catch(function (res) {
+                        console.log(res);
                         this.$Message.error('无法预测，文件格式不对或无法识别！');
-                    }
-                    this.loading = false;
-                }.bind(this)).catch(function(res) {
-                    console.log(res);
-                    this.$Message.error('无法预测，文件格式不对或无法识别！');
-                    this.loading = false;
-                }.bind(this));
+                        this.loading = false;
+                    }.bind(this));
+                });
             }
         },
         created() {
@@ -92,8 +107,28 @@
         text-align: center;
         font-size: 22px;
     }
+    input[type=file] {
+        padding: 6px 12px;
+        line-height: 1.42857143;
+        vertical-align: middle;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        color: #333;
+        background-color: #fff;
+    }
     .countup {
         font-size: 36px;
         font-weight: 900;
+    }
+    .tips {
+        font-size: 14px;
+    }
+    .tips p {
+        text-indent: 2em;
+        margin-bottom: 10px;
+    }
+    .tips .title {
+        font-weight: 800;
+        padding: 10px 0 5px 0;
     }
 </style>

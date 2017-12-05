@@ -12145,7 +12145,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_iview___default.a);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('i-count-up', __WEBPACK_IMPORTED_MODULE_2_vue_countup_v2___default.a);
+Vue.component('CountUp', __WEBPACK_IMPORTED_MODULE_2_vue_countup_v2___default.a);
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('predictor-home', __webpack_require__(49));
 Vue.component('genotype-predictor', __webpack_require__(55));
@@ -65441,7 +65441,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n.predict_height[data-v-d6a2dc88] {\n    text-align: center;\n    font-size: 22px;\n}\n.countup[data-v-d6a2dc88] {\n    font-size: 36px;\n    font-weight: 900;\n}\n", ""]);
+exports.push([module.i, "\n.predict_height[data-v-d6a2dc88] {\n    text-align: center;\n    font-size: 22px;\n}\ninput[type=file][data-v-d6a2dc88] {\n    padding: 6px 12px;\n    line-height: 1.42857143;\n    vertical-align: middle;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    color: #333;\n    background-color: #fff;\n}\n.countup[data-v-d6a2dc88] {\n    font-size: 36px;\n    font-weight: 900;\n}\n.tips[data-v-d6a2dc88] {\n    font-size: 14px;\n}\n.tips p[data-v-d6a2dc88] {\n    text-indent: 2em;\n    margin-bottom: 10px;\n}\n.tips .title[data-v-d6a2dc88] {\n    font-weight: 800;\n    padding: 10px 0 5px 0;\n}\n", ""]);
 
 // exports
 
@@ -65485,15 +65485,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'genotype_predictor',
     data: function data() {
         return {
             formItem: {
-                genotype: undefined,
-                gender: undefined,
-                source: undefined
+                genotype: null,
+                gender: null,
+                source: null
+            },
+            rules: {
+                genotype: { required: true, message: '请上传基因型文件', trigger: 'blur' },
+                gender: { required: true, message: '请输入孩子的性别', trigger: 'change' }
             },
             sources: {},
             height: null,
@@ -65514,26 +65523,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }.bind(this));
         },
         submit: function submit() {
-            this.loading = true;
-            var fd = new FormData(document.getElementById('gt_form'));
-            axios.post('/api/predict', fd).then(function (res) {
-                if ('data' in res) {
-                    if ('height' in res.data) {
-                        this.height = Number(res.data.height);
-                    } else if ('error' in res.data) {
-                        this.$Message.error(res.data.error);
+            var _this = this;
+
+            this.$refs['iform'].validate(function (valid) {
+                if (!valid) {
+                    _this.$Message.error('信息输入有误！');
+                    return;
+                }
+                _this.loading = true;
+                var fd = new FormData(document.getElementById('gt_form'));
+                axios.post('/api/predict', fd).then(function (res) {
+                    if ('data' in res) {
+                        if ('height' in res.data) {
+                            this.height = Number(res.data.height);
+                        } else if ('error' in res.data) {
+                            this.$Message.error(res.data.error);
+                        } else {
+                            this.$Message.error('无法预测，文件格式不对或无法识别！');
+                        }
                     } else {
                         this.$Message.error('无法预测，文件格式不对或无法识别！');
                     }
-                } else {
+                    this.loading = false;
+                }.bind(_this)).catch(function (res) {
+                    console.log(res);
                     this.$Message.error('无法预测，文件格式不对或无法识别！');
-                }
-                this.loading = false;
-            }.bind(this)).catch(function (res) {
-                console.log(res);
-                this.$Message.error('无法预测，文件格式不对或无法识别！');
-                this.loading = false;
-            }.bind(this));
+                    this.loading = false;
+                }.bind(_this));
+            });
         }
     },
     created: function created() {
@@ -65557,26 +65574,27 @@ var render = function() {
         "Row",
         [
           _c(
-            "i-col",
+            "Col",
             { attrs: { span: "24" } },
             [
               _c(
-                "i-form",
+                "Form",
                 {
+                  ref: "iform",
                   attrs: {
                     model: _vm.formItem,
                     "label-width": 80,
-                    id: "gt_form"
+                    rules: _vm.rules
                   }
                 },
                 [
                   _c(
                     "Form-item",
-                    { attrs: { label: "文件类型" } },
+                    { attrs: { label: "文件类型", prop: "source" } },
                     [
                       _vm.sources
                         ? _c(
-                            "i-select",
+                            "Select",
                             {
                               attrs: {
                                 model: _vm.formItem.source,
@@ -65591,7 +65609,7 @@ var render = function() {
                             },
                             _vm._l(_vm.sources, function(s, index) {
                               return _c(
-                                "i-option",
+                                "Option",
                                 { key: index, attrs: { value: index } },
                                 [_vm._v(_vm._s(s))]
                               )
@@ -65602,40 +65620,41 @@ var render = function() {
                     1
                   ),
                   _vm._v(" "),
-                  _c("Form-item", { attrs: { label: "基因文件" } }, [
-                    _c("input", {
-                      attrs: {
-                        type: "file",
-                        model: _vm.formItem.genotype,
-                        name: "genotype"
-                      }
-                    })
-                  ]),
+                  _c(
+                    "Form-item",
+                    { attrs: { label: "基因文件", prop: "genotype" } },
+                    [
+                      _c("input", {
+                        attrs: {
+                          type: "file",
+                          model: _vm.formItem.genotype,
+                          name: "genotype"
+                        }
+                      })
+                    ]
+                  ),
                   _vm._v(" "),
                   _c(
                     "Form-item",
-                    { attrs: { label: "性别" } },
+                    { attrs: { label: "性别", prop: "gender" } },
                     [
                       _c(
-                        "i-select",
+                        "RadioGroup",
                         {
-                          attrs: {
-                            model: _vm.formItem.gender,
-                            placeholder: "请选择性别",
-                            name: "gender"
-                          },
-                          on: {
-                            "update:model": function($event) {
-                              _vm.$set(_vm.formItem, "gender", $event)
-                            }
+                          model: {
+                            value: _vm.formItem.gender,
+                            callback: function($$v) {
+                              _vm.$set(_vm.formItem, "gender", $$v)
+                            },
+                            expression: "formItem.gender"
                           }
                         },
                         [
-                          _c("i-option", { attrs: { value: "male" } }, [
+                          _c("Radio", { attrs: { label: "male" } }, [
                             _vm._v("男")
                           ]),
                           _vm._v(" "),
-                          _c("i-option", { attrs: { value: "female" } }, [
+                          _c("Radio", { attrs: { label: "female" } }, [
                             _vm._v("女")
                           ])
                         ],
@@ -65649,7 +65668,7 @@ var render = function() {
                     "Form-item",
                     [
                       _c(
-                        "i-button",
+                        "Button",
                         {
                           attrs: { type: "primary", loading: _vm.loading },
                           on: { click: _vm.submit }
@@ -65675,11 +65694,11 @@ var render = function() {
             { staticClass: "predict_height" },
             [
               _c(
-                "i-col",
+                "Col",
                 { attrs: { span: "24" } },
                 [
                   _vm._v("\n            预测您的基因身高: "),
-                  _c("i-count-up", {
+                  _c("CountUp", {
                     staticClass: "countup",
                     attrs: {
                       start: 0,
@@ -65693,6 +65712,15 @@ var render = function() {
                 1
               )
             ],
+            1
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.height
+        ? _c(
+            "Row",
+            { staticClass: "tips" },
+            [_c("Col", { attrs: { span: "20", offset: "2" } }, [_c("p")])],
             1
           )
         : _vm._e()
@@ -65922,7 +65950,7 @@ var render = function() {
         "Row",
         [
           _c(
-            "i-col",
+            "Col",
             { attrs: { span: "24" } },
             [
               _c(
@@ -66026,7 +66054,7 @@ var render = function() {
                     "Form-item",
                     [
                       _c(
-                        "i-button",
+                        "Button",
                         {
                           attrs: { type: "primary", loading: _vm.loading },
                           on: { click: _vm.submit }
@@ -66052,11 +66080,11 @@ var render = function() {
             { staticClass: "predict_height" },
             [
               _c(
-                "i-col",
+                "Col",
                 { attrs: { span: "24" } },
                 [
                   _vm._v("\n            预测孩子身高: "),
-                  _c("i-count-up", {
+                  _c("CountUp", {
                     staticClass: "countup",
                     attrs: {
                       start: 0,
@@ -66079,7 +66107,7 @@ var render = function() {
             "Row",
             { staticClass: "tips" },
             [
-              _c("i-col", { attrs: { span: "20", offset: "2" } }, [
+              _c("Col", { attrs: { span: "20", offset: "2" } }, [
                 _c("div", { staticClass: "title" }, [_vm._v("计算公式如下：")]),
                 _vm._v(" "),
                 _c("p", [

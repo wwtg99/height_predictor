@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <Row>
-            <i-col span="24">
+            <Col span="24">
                 <Form ref="iform" :model="formItem" :label-width="80" :rules="rules">
                     <Form-item label="父亲身高" prop="father">
                         <Input v-model="formItem.father" placeholder="请输入">
@@ -20,18 +20,18 @@
                         </RadioGroup>
                     </Form-item>
                     <Form-item>
-                        <i-button type="primary" :loading="loading" @click="submit">提交</i-button>
+                        <Button type="primary" :loading="loading" @click="submit">提交</Button>
                     </Form-item>
                 </Form>
-            </i-col>
+            </Col>
         </Row>
         <Row v-if="height" class="predict_height">
-            <i-col span="24">
-                预测孩子身高: <i-count-up :start="0" :end="height" :decimals="2" :duration="2.5" class="countup"></i-count-up> cm
-            </i-col>
+            <Col span="24">
+                预测孩子身高: <CountUp :start="0" :end="height" :decimals="2" :duration="2.5" class="countup"></CountUp> cm
+            </Col>
         </Row>
         <Row v-if="height" class="tips">
-            <i-col span="20" offset="2">
+            <Col span="20" offset="2">
                 <div class="title">计算公式如下：</div>
                 <p>男孩成人时身高（CM）＝（父身高 + 母身高）÷2×1.08</p>
                 <p>女孩成人时身高（CM）＝（父身高×0.923 + 母身高）÷2</p>
@@ -44,7 +44,7 @@
                 <div class="title">三、疾病治疗</div>
                 <p>对于侏儒症或甲状腺功能不全所致的呆小病，必须从小及时治疗。长期营养不良也会影响身高。据报道，青少年若体内缺铁或发生缺铁性贫血的，其平均身高要比正常青少年低3CM，故缺铁性贫血也应及时治疗。</p>
                 <p>必须指出的是，作为父母，关心孩子的将来身高是很自然的事。但是，我们每个人都应知道，历史和现实中有许多伟人，并非都是八尺身躯的“美男子”。要正视现实，不必为自己的孩子或自己比较矮小而怨天忧人。相反，要让孩子积极锻炼，健康成长。</p>
-            </i-col>
+            </Col>
         </Row>
     </div>
 </template>

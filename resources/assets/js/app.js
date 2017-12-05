@@ -20,7 +20,7 @@ Vue.use(iView);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('i-count-up', ICountUp);
+Vue.component('CountUp', ICountUp);
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('predictor-home', require('./components/PredictorHome.vue'));
 Vue.component('genotype-predictor', require('./components/GenotypePredictor.vue'));
