@@ -65271,7 +65271,7 @@ exports = module.exports = __webpack_require__(1)(undefined);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n.flex_box[data-v-5a6a5814] {\n    width: 100%;\n    min-height: 100vh;\n    min-width: 600px;\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex;\n    -webkit-box-orient: vertical;\n    -webkit-box-direction: normal;\n        -ms-flex-direction: column;\n            flex-direction: column;\n    -ms-flex-wrap: wrap;\n        flex-wrap: wrap;\n    -webkit-box-pack: center;\n        -ms-flex-pack: center;\n            justify-content: center;\n    -webkit-box-align: center;\n        -ms-flex-align: center;\n            align-items: center;\n}\n.text-center[data-v-5a6a5814] {\n    text-align: center;\n}\n.bg_light[data-v-5a6a5814] {\n    background-color: #F6F6F6;\n}\n.bg_light_blue[data-v-5a6a5814] {\n    background-color: #D6E4F0;\n}\n.bg_blue[data-v-5a6a5814] {\n    background-color: #1E56A0;\n}\n.bg_dark_blue[data-v-5a6a5814] {\n    background-color: #163172;\n}\nh2.title[data-v-5a6a5814] {\n    padding-top: 50px;\n}\n.title[data-v-5a6a5814] {\n    font-size: 28px;\n    font-weight: 800;\n    padding: 20px 10px;\n    width: 100%;\n    text-align: center;\n}\n.content[data-v-5a6a5814] {\n    width: 80%;\n    max-width: 500px;\n    padding: 20px 50px;\n}\nfooter h4[data-v-5a6a5814] {\n    font-size: 14px;\n    font-weight: 600;\n    padding-top: 30px;\n}\n.foot_row[data-v-5a6a5814] {\n    width: 100%;\n    color: #d5d5d5;\n}\nfooter ul[data-v-5a6a5814] {\n    list-style: none;\n    padding: 10px 0;\n}\nfooter ul li[data-v-5a6a5814] {\n    padding: 5px 0;\n}\nfooter ul li>a[data-v-5a6a5814] {\n    text-decoration: none;\n    color: #c0c0c0;\n}\n", ""]);
 
 // exports
 
@@ -65322,6 +65322,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -65340,11 +65387,152 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "container" },
-    [_c("genotype-predictor"), _vm._v(" "), _c("parent-predictor")],
+    [
+      _c(
+        "div",
+        { staticClass: "flex_box bg_light", attrs: { id: "genotypes" } },
+        [
+          _c("h2", { staticClass: "title" }, [_vm._v("基于基因型的身高预测")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "content" }, [_c("genotype-predictor")], 1),
+          _vm._v(" "),
+          _vm._m(0, false, false)
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "flex_box bg_light_blue", attrs: { id: "parents" } },
+        [
+          _c("h2", { staticClass: "title" }, [_vm._v("基于父母的身高预测")]),
+          _vm._v(" "),
+          _c("div", { staticClass: "content" }, [_c("parent-predictor")], 1),
+          _vm._v(" "),
+          _vm._m(1, false, false)
+        ]
+      ),
+      _vm._v(" "),
+      _c("BackTop"),
+      _vm._v(" "),
+      _c("footer", [
+        _c(
+          "div",
+          { staticClass: "foot_row bg_blue" },
+          [
+            _c(
+              "Row",
+              [
+                _c("Col", { attrs: { span: "6", offset: "3" } }, [
+                  _c(
+                    "h4",
+                    [
+                      _c("Icon", { attrs: { type: "social-github" } }),
+                      _vm._v(" GitHub")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("ul", [
+                    _c("li", [
+                      _c("a", { attrs: { href: "#", target: "_blank" } }, [
+                        _vm._v("Predict height scripts")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#", target: "_blank" } }, [
+                        _vm._v("Height predictor server")
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("Col", { attrs: { span: "6" } }, [
+                  _c(
+                    "h4",
+                    [
+                      _c("Icon", { attrs: { type: "link" } }),
+                      _vm._v(" 相关链接")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("ul", [
+                    _c("li", [
+                      _c("a", { attrs: { href: "#", target: "_blank" } }, [
+                        _vm._v("关于我")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#", target: "_blank" } }, [
+                        _vm._v("联系我")
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("Col", { attrs: { span: "6" } }, [
+                  _c(
+                    "h4",
+                    [
+                      _c("Icon", { attrs: { type: "chatboxes" } }),
+                      _vm._v(" About me")
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("ul", [
+                    _c("li", [
+                      _c("a", { attrs: { href: "#", target: "_blank" } }, [
+                        _vm._v("关于我")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("li", [
+                      _c("a", { attrs: { href: "#", target: "_blank" } }, [
+                        _vm._v("联系我")
+                      ])
+                    ])
+                  ])
+                ])
+              ],
+              1
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c("div", { staticClass: "foot_row bg_dark_blue text-center" }, [
+          _vm._v("\n            aaaa\n        ")
+        ])
+      ])
+    ],
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "content text-center" }, [
+      _c("a", { attrs: { href: "#parents" } }, [
+        _vm._v("没有基因型，试试用父母的身高预测？")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "content text-center" }, [
+      _c("a", { attrs: { href: "#genotypes" } }, [
+        _vm._v("我有基因型，给我测测遗传身高。")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
