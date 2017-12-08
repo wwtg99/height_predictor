@@ -12,3 +12,4 @@
 */
 
 Route::view('/', 'home');
+Route::view('/height_predictor', 'home')->name('home');

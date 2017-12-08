@@ -57,7 +57,7 @@
         },
         methods: {
             getSource() {
-                axios.get('/api/sources').then(function (res) {
+                axios.get('/api/height_predictor/sources').then(function (res) {
                     if ('data' in res) {
                         this.sources = res.data;
                     } else {
@@ -75,7 +75,7 @@
                     }
                     this.loading = true;
                     let fd = new FormData(document.getElementById('gt_form'));
-                    axios.post('/api/predict', fd).then(function (res) {
+                    axios.post('/api/height_predictor/predict', fd).then(function (res) {
                         if ('data' in res) {
                             if ('height' in res.data) {
                                 this.height = Number(res.data.height);
