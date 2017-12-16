@@ -9,6 +9,8 @@
 namespace App\Servers;
 
 
+use Illuminate\Http\UploadedFile;
+
 class Predictor
 {
 
@@ -119,28 +121,30 @@ class Predictor
     }
 
     /**
-     * @param $genotypeFile
+     * @param UploadedFile $genotypeFile
      * @param $gender
      * @param $source
      * @return string|bool
      */
     public function parseInputs($genotypeFile, $gender, $source = null)
     {
-        if (!file_exists($genotypeFile)) {
+        if (!file_exists($genotypeFile->getRealPath())) {
             $this->error = 'genotype file not exists';
             return false;
         }
-        $output = $this->getPreprocessedGenotypePath();
-        $cmd = [$this->parseInputScript, '--genotype', $genotypeFile, '--output', $output, '--gender', $gender, '--min-snp', $this->minSnp];
+        $genotypeFile = $genotypeFile->store('genotypes');
+        $id = pathinfo($genotypeFile, PATHINFO_FILENAME);
+        $output = $this->getPreprocessedGenotypePath($id);
+        $cmd = [$this->parseInputScript, '--genotype', storage_path('app' . DIRECTORY_SEPARATOR . $genotypeFile), '--output', $output, '--gender', $gender, '--min-snp', $this->minSnp];
         if ($this->snpType) {
             $cmd[] = "--snp-list=$this->snpType";
         }
-        if ($source) {
+        if ($source && $source != 'null') {
             $cmd[] = "--source=$source";
         }
         $re = $this->runScript($cmd);
         if (starts_with($re, 'Exception')) {
-            $this->error = $re;
+            $this->error = 'snp not enough';
             logger()->error($this->error);
         }
         return $output;
@@ -177,11 +181,14 @@ class Predictor
     }
 
     /**
+     * @param $id
      * @return string
      */
-    protected function getPreprocessedGenotypePath()
+    protected function getPreprocessedGenotypePath($id = '')
     {
-        $id = str_random();
+        if (!$id) {
+            $id = str_random();
+        }
         return $this->storeDir . DIRECTORY_SEPARATOR . "$id.csv";
     }
 

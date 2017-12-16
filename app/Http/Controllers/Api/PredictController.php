@@ -21,9 +21,9 @@ class PredictController extends Controller
         }
         $source = $request->input('source');
         $predictor = new Predictor();
-        $pre = $predictor->predictHeight($genotype->getRealPath(), $gender, $source);
+        $pre = $predictor->predictHeight($genotype, $gender, $source);
         if (!$pre) {
-            return response()->json(['error'=>$predictor->getError()]);
+            return response()->json(['error'=>__($predictor->getError())]);
         }
         return response()->json(['height'=>$pre]);
     }
@@ -37,7 +37,7 @@ class PredictController extends Controller
     public function sourceList()
     {
         $source = [
-            'none' => 'Custom',
+            'none' => '自定义',
             '23andme' => '23 and me',
             '23andme-exome-vcf' => '23 and me exome vcf',
             'ftdna-illumina' => 'ftdna-illumina',
@@ -46,5 +46,12 @@ class PredictController extends Controller
             'vcf' => 'vcf',
         ];
         return response()->json($source);
+    }
+
+    public function examples(Request $request)
+    {
+        $id = $request->input('id', 'female.tsv');
+        $fpath = resource_path('examples' . DIRECTORY_SEPARATOR . $id);
+        return response()->download($fpath);
     }
 }

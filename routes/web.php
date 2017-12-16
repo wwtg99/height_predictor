@@ -13,3 +13,4 @@
 
 Route::view('/', 'home');
 Route::view('/height_predictor', 'home')->name('home');
+Route::get('/height_predictor/examples', 'Api\PredictController@examples')->name('examples');

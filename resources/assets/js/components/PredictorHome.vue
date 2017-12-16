@@ -1,13 +1,13 @@
 <template>
     <div class="container">
-        <div class="flex_box bg_light" id="project">
+        <div class="flex_box bg_pink" id="project">
             <h2 class="title">基于机器学习方法的中国人基因身高预测</h2>
             <div class="abstract">
                 <div class="method">
                     <p>使用了机器学习的多种回归模型，对中国人身高相关的 SNP 位点进行学习，从而预测中国人的基因身高。</p>
                 </div>
                 <div class="link">
-                    <Button type="ghost" shape="circle" icon="social-github" @click="toGithub">GITHUB</Button>
+                    <Button type="primary" shape="circle" icon="social-github" @click="toGithub">GITHUB</Button>
                     <ul>
                         <li><Button type="text" @click="scrollTo('#genotypes')">我有基因型，给我测测遗传身高。</Button></li>
                         <li><Button type="text" @click="scrollTo('#parents')">没有基因型，试试用父母的身高预测？</Button></li>
@@ -15,6 +15,7 @@
                 </div>
                 <div class="descr">身高不仅仅由遗传决定，且数据量较少，仅供娱乐 ^_^</div>
             </div>
+            <div class="pic"><img src="/assets/height_predictor/images/height.jpg"/></div>
             <div class="note">身高指人体纵向部分的长度。一天内身高的变化，晨起最高，傍晚最低，相差约2厘米。人体身高增长有两个高峰，婴儿时期和青春期。影响身高的因素很多，如遗传、营养、体育运动、良好的睡眠、生活习惯、种族、内分泌、性成熟早晚、远亲婚配等等。遗传因素对身高的影响较大。</div>
         </div>
         <div class="flex_box bg_light_blue" id="introduction">
@@ -62,7 +63,11 @@
                         <h4><Icon type="link"></Icon> 相关链接</h4>
                         <ul>
                             <li><a href="http://www.nhfpc.gov.cn/xcs/s3574/201506/6b4c0f873c174ace9f57f11fd4f6f8d9.shtml" target="_blank">中国居民营养与慢性病状况报告</a></li>
-                            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed?term=25429064" target="_blank">相关文献</a></li>
+                            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed?term=25429064" target="_blank">相关文献1</a></li>
+                            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=23456168" target="_blank">相关文献2</a></li>
+                            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=20189936" target="_blank">相关文献3</a></li>
+                            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=19396169" target="_blank">相关文献4</a></li>
+                            <li><a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=28146470" target="_blank">相关文献5</a></li>
                         </ul>
                     </Col>
                     <Col span="6">
@@ -126,6 +131,9 @@
     .text-center {
         text-align: center;
     }
+    .bg_pink {
+        background-color: #F0E2D9;
+    }
     .bg_light {
         background-color: #F6F6F6;
     }
@@ -148,13 +156,14 @@
     }
     .content {
         width: 80%;
-        max-width: 500px;
+        max-width: 600px;
         padding: 20px 50px;
     }
     .abstract {
         width: 60%;
         margin-left: 35%;
         padding: 20px 30px;
+        z-index: 3;
     }
     .abstract .method {
         font-size: 18px;
@@ -171,8 +180,6 @@
     }
     .abstract .descr {
         font-size: 14px;
-        position: absolute;
-        right: 50px;
     }
     .note {
         background-color: #ffffcc;
@@ -202,6 +209,16 @@
         -o-transform: scale(1.1);
         transform: scale(1.1);
         z-index:5;
+    }
+    .pic {
+        position: absolute;
+        bottom: -5px;
+        right: 0;
+        width: 340px;
+        z-index: 1;
+    }
+    .pic img {
+        width: 100%;
     }
     .height_img img {
         width: 150px;

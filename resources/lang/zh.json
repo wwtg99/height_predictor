@@ -1,0 +1,5 @@
+{
+  "genotype file not exists": "上传文件错误，输入文件不存在！",
+  "snp not enough": "相关位点不足，请补充位点！",
+  "preprocess file not exists": "预处理失败，可能是文件格式错误！"
+}
