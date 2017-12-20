@@ -120,7 +120,7 @@
     .flex_box {
         width: 100%;
         min-height: 100vh;
-        min-width: 600px;
+        min-width: 800px;
         display: -webkit-flex;
         display: flex;
         flex-direction: column;
@@ -254,6 +254,10 @@
         font-size: 12px;
     }
     /* footer */
+    footer {
+        width: 100%;
+        min-width: 800px;
+    }
     footer h4 {
         font-size: 14px;
         font-weight: 600;
